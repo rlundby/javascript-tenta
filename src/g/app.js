@@ -151,25 +151,6 @@ $('body').on("click", "#submitOrder", e => {
     }
 });
 
-// function sendOrder() {
-//     // Each product will be posted once
-//     for (let item of itemsInCart) {
-//         let order = {
-//             productName: item.Name,
-//             productId: item.Id,
-//             productQuantity: item.quantity
-//         }
-//
-//         fetch('http://localhost:3000/orders', {
-//             method: 'POST',
-//             body: JSON.stringify({order}),
-//             headers: new Headers({
-//                 'Content-Type': 'application/json'
-//             })
-//         })
-//     }
-// }
-
 function sendOrder() {
     // Each product will be posted once
     const promises = [];
