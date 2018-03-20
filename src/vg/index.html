@@ -7,9 +7,27 @@
     <title>Väl Godkänd</title>
 </head>
 <body>
-
+    <h3>Errors:</h3>
+        <p id="allErrors"></p>
     <!-- HTML för att implementera krav F -->
+    <form class="newProduct" accept-charset="ISO-8859-1">
+        <label for="productId">Please enter a product ID</label>
+        <input type="number" name="id" id="productId">
 
+        <label for="productName">Please enter a product name</label>
+        <input type="text" name="name" id="productName">
+
+        <label for="productPrice">Please enter a product price</label>
+        <input type="number" name="price" id="productPrice">
+
+        <label for="productId">Please select product availability</label>
+        <select name="available" id="productAvailable">
+            <option value="inStock">IN_STOCK</option>
+            <option value="outOfStock">OUT_OF_STOCK</option>
+            <option value="deliveryPending">DELIVERY_PENDING</option>
+        </select>
+        <button id="submitProduct">Submit Product</button>
+    </form>
     <!-- Scripts -->
     <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
     <script src="validator.js"></script>

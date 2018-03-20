@@ -5,8 +5,12 @@
  * 
  * 1. Inför validering krävs att man först anger s.k. validerare ("validator") via FormValidator.addValidator(). 
  * En validator är en funktion som tar en parameter "value" och returnerar true om validering lyckas, annars false. 
- * Varje validator anges med ett namn. 
- * 
+ * Varje validator anges med ett namn.
+ *
+ *
+ *
+ *
+ *
  * 2. Data från formulärfält mappas till de validators som ska användas. Detta görs genom ett särskilt mappningsobjekt, 
  * där varje property motsvarar ett specifikt formulärfält och dess värde är namnet på den validator som ska användas.
  * 
@@ -59,24 +63,89 @@
  * TIPS: Ett objekt som FormValidator kan naturligtvis ha properties, och dessa nås i objektets funktioner via this.
  * En sådan property är objektet 'validators'. 
  */
+
+const errors = [];
+
+
 const FormValidator = {
     validators: {},
 
     addValidator(validatorName, validatorFunction) {
-        // spara undan en validator funktion med med ett givet namn.
+        if (!this.validators[validatorName]) {
+            this.validators[validatorName] = [];
+        }
+
+        this.validators[validatorName].push(validatorFunction);
     },
 
     prepare(mapping) {
-        // spara undan ett mappningsobjekt mellan formulärfält och deras validators.
+        const map = {
+            id: 'isIntAndAllowed',
+            name: 'isValidName',
+            price: 'isValidPrice'
+        }
+
+        for (let i in mapping) {
+            const validator = this.validators[map[i]];
+            validator.forEach(validator => {
+                validator(mapping[i]);
+            });
+        }
+
+    console.log(errors);
     },
 
     validate(data) {
-        // för varje property (= formulärfält) i dataobjektet 
-        //  hämta ut motsvarande validator för property:n m.h.a mappningsobjektet och applicera den på property:ns 
-        //   värde (= formulärdata)
-        //  om validatorn returnerar false, skapa och lägg till ett felmeddelande i en lista. Felmeddelandet ska 
-        //   innehålla namnet på property:n.
-        //
-        // returnera listan av felmeddelanden. 
+         this.prepare(data) ;
+
     }
 }
+
+
+
+FormValidator.addValidator('isIntAndAllowed', function(value) {
+    value = parseInt(value);
+    if (Number.isInteger(value)) {
+        if (value >= 0 && value < 9999) {
+            return true;
+        }
+        let errorMsg = "Please enter a valid ID"
+        errors.push(errorMsg);
+
+        return false;
+    }
+    return false;
+ })
+
+FormValidator.addValidator('isValidName', function(value) {
+    console.log(value);
+  if (value == '') {
+      let errorMsg = "Please enter a name"
+      errors.push(errorMsg);
+      return false;
+      }
+  else if (value.length < 3) {
+      let errorMsg = "Please enter a name longer than 3 chars"
+      errors.push(errorMsg);
+      return false;
+  }
+  else if (/[^a-zA-Z0-9\-]/.test(value)) {
+      let errorMsg = "Please don't use symbols"
+      errors.push(errorMsg);
+      return false;
+  }
+  else {
+      return true;
+  }
+ })
+
+FormValidator.addValidator('isValidPrice', function(value) {
+    value = parseInt(value);
+    if (value !== 0 ) {
+        return true;
+    }
+    let errorMsg = "Please enter a valid price"
+    errors.push(errorMsg);
+   return false;
+})
+
