@@ -1,5 +1,20 @@
 // JavaScript för att implementera kraven A-E.
 
+// Lets hide the checkout by default!
+$('#showCart').hide();
+
+// Lets implement buttons so we can change the view
+$('#displayProducts').on("click", e => {
+   $('#showCart').hide();
+   $('#showProducts').show();
+});
+$('#displayCart').on("click", e => {
+    $('#showProducts').hide();
+    $('#showCart').show();
+});
+
+
+
 // Lets get all the products we need:
 let productList;
 let itemsInCart = [];
@@ -181,5 +196,5 @@ function sendOrder() {
     Promise.all(promises)
         .then( alert("Your order has been sent!") )
         .then( itemsInCart = [] )
-        .then( renderCart())
+        .then( renderCart() )
 }
